@@ -1,4 +1,4 @@
-package 数据结构与算法分析;
+package 数据结构与算法分析.sort;
 
 /**
  * Created with IntelliJ IDEA
@@ -238,7 +238,7 @@ class HerNode{
     public  int no;
     public String name;
     public  String nickname;
-    public  HerNode next;//指向下一个节点
+    public HerNode next;//指向下一个节点
     /*构造器*/
     public HerNode(int no,String name,String nickname)
     {

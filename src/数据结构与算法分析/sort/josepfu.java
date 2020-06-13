@@ -1,4 +1,4 @@
-package 数据结构与算法分析;
+package 数据结构与算法分析.sort;
 
 /**
  * Created with IntelliJ IDEA
@@ -142,6 +142,7 @@ class circleSingleLinkedList{
 
 
 }
+
 /*  创建一个boy，表示一个节点*/
 class boy{
     private int no;//编号

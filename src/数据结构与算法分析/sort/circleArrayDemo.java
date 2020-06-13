@@ -1,7 +1,4 @@
-package 数据结构与算法分析;
-
-import com.sun.corba.se.impl.resolver.SplitLocalResolverImpl;
-import sun.font.EAttribute;
+package 数据结构与算法分析.sort;
 
 import java.util.Scanner;
 
@@ -9,15 +6,16 @@ import java.util.Scanner;
  * Created with IntelliJ IDEA
  *
  * @Author: mocas
- * @Date: 2020/6/4 20:57
+ * @Date: 2020/6/5 20:32
  * @email: wangyuhang_mocas@163.com
  */
-public class arrayQueueDemo {
-    /*进行测试*/
-    public static void main(String[] args) {
+public class circleArrayDemo {
 
+    public static void main(String[] args) {
+        /*测试*/
+        System.out.println("测试环形队列");
         /*创建一个队列*/
-        arrayQueue arrayQueue=new arrayQueue(3);
+        circleArray arrayQueue=new circleArray(4);//有效数据最大为3
         char key=' ';//接受用户输入
         Scanner sc=new Scanner(System.in);
 
@@ -80,27 +78,28 @@ public class arrayQueueDemo {
 
 }
 
-/*用数组模拟一个队列*/
-class arrayQueue{
+class circleArray{
     private int maxSize;//表示数组的最大容量
+    /*front变量有调整，front指向队列的第一个元素，也就是arr[front]是第一个元素*/
     private int front;//队列头
+    /*rear变量指向队列最后一个元素的后一个位置，*/
     private int rear;//队列尾
     private int[] arr;//用于存放数据，模拟队列
 
-    /*创建队列的构造器*/
-    public arrayQueue(int arrmaxSize)
+    public circleArray(int arrmaxSize)
     {
         maxSize=arrmaxSize;
         arr=new int[maxSize];
-        front=-1;//指向队列头部，分析出指向列头的前一个位置,重点
-        rear=-1;//指向队列尾部，指向队列尾的数据，即是最后一个数据
+        front=0;//
+        rear=0;//
     }
 
-    /*判断队列是否是满的*/
+    /*判断队列是否满*/
     public boolean isFull()
     {
-        return rear==maxSize-1;
+        return (rear+1)%maxSize==front;
     }
+
     /*判断队列是否为空*/
     public boolean isEmpty()
     {
@@ -116,9 +115,11 @@ class arrayQueue{
             System.out.println("队列已经满了，不能加入数据");
             return;
         }
-        /*如果没有满*/
-        rear++;//尾部后移
+
+        /*直接将数据加入*/
         arr[rear]=n;
+        /*将rear后移*/
+        rear=(rear+1)%maxSize;
 
     }
 
@@ -132,10 +133,14 @@ class arrayQueue{
             throw new RuntimeException("队列为空，不能出队列");
         }
 
-        front++;//front后移
-        return arr[front];
+        /*这里front是指向队列的第一个元素    */
+        /*1.先把front值保存到一个临时变量
+        * 2.将front后移，考虑取模
+        * 3.将临时变量返回*/
+        int val=arr[front];
+        front=(front+1)%maxSize;
+        return val;
     }
-
     /*显示队列所有值*/
     public void show()
     {
@@ -144,13 +149,20 @@ class arrayQueue{
             System.out.println("队列为空。");
             return;
         }
-        for (int i=0;i<arr.length;i++)
+
+        /*从front遍历，遍历多少个元素  */
+        for (int i=front;i<front+size();i++)
         {
-            System.out.printf("arr[%d]=%d\n",i,arr[i]);
+            System.out.printf("arr[%d]=%d\n",i%maxSize,arr[i%maxSize]);
 
         }
     }
 
+    /*求出当前队列有效的个数*/
+    public int size()
+    {
+        return (rear+maxSize-front)%maxSize;
+    }
     /*显示队列的头数据，不是取数据*/
     public int headQueue()
     {
@@ -158,7 +170,6 @@ class arrayQueue{
         {
             throw new RuntimeException("队列头为空");
         }
-        return arr[front+1];
+        return arr[front];
     }
-
 }

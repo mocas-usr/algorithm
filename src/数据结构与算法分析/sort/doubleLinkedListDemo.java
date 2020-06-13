@@ -1,4 +1,4 @@
-package 数据结构与算法分析;
+package 数据结构与算法分析.sort;
 
 /**
  * Created with IntelliJ IDEA
@@ -187,12 +187,13 @@ class doubleLinkedList {
 
     }
 }
+
 /*定义hernode，每一个hernode就是一个节点*/
 class HerNode2{
     public  int no;
     public String name;
     public  String nickname;
-    public  HerNode2 next;//指向下一个节点
+    public HerNode2 next;//指向下一个节点
     public HerNode2 pre;
     /*构造器*/
     public HerNode2(int no,String name,String nickname)
