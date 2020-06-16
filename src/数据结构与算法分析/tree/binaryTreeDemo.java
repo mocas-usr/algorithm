@@ -26,12 +26,38 @@ public class binaryTreeDemo {
         binarTree.setRoot(root);
 
         /*测试*/
-        System.out.println("前序遍历");
+//        System.out.println("前序遍历");
+//        binarTree.preOrder();
+//        System.out.println("中序遍历");
+//        binarTree.infixOrder();
+//        System.out.println("后序遍历");
+//        binarTree.postOrder();
+
+        /*前序遍历查找*/
+//        herNode resNoder= binarTree.postOrderSearch(15);
+//        if (resNoder!=null)
+//        {
+//            System.out.printf("找到了，信息为no=%d name=%s",resNoder.getNo(),resNoder.getName());
+//        }
+//        else {
+//            System.out.printf("没有找到no=%d的英雄",5);
+//        }
+
+        /*中序遍历查找*/
+        herNode resNoder= binarTree.infixOrderSearch(15);
+        if (resNoder!=null)
+        {
+            System.out.printf("找到了，信息为no=%d name=%s",resNoder.getNo(),resNoder.getName());
+        }
+        else {
+            System.out.printf("没有找到no=%d的英雄",5);
+        }
+
+        System.out.println("删除前，前序遍历");
         binarTree.preOrder();
-        System.out.println("中序遍历");
-        binarTree.infixOrder();
-        System.out.println("后序遍历");
-        binarTree.postOrder();
+        binarTree.delNode(5);
+        System.out.println("删除后，前序遍历");
+        binarTree.preOrder();
 
 
     }
@@ -44,6 +70,27 @@ class binarTree{
     {
         this.root=root;
 
+    }
+    public void delNode(int no)
+    {
+            if (root!=null)
+            {
+                /*如果只有一个root节点，这里立即判断root是不是要删除的节点*/
+                if (root.getNo()==no)
+                {
+                    root=null;
+                }
+                else
+                {
+                    //递归删除
+                    root.delNode(no);
+                }
+
+            }
+            else
+            {
+                System.out.println("空树，不能删除");
+            }
     }
 
     /*前序遍历*/
@@ -78,6 +125,41 @@ class binarTree{
         }
         else {
             System.out.println("二叉树为空，无法遍历");
+        }
+    }
+
+    /*前序遍历*/
+    public herNode preOrderSearch(int no)
+    {
+        if (root!=null)
+        {
+            return root.preOrderSearch(no);
+        }
+        else
+        {
+            return null;
+        }
+    }
+    /*中序遍历*/
+    public herNode infixOrderSearch(int no)
+    {
+        if (this.root!=null)
+        {
+            return root.infixOrderSearch(no);
+        }
+        else {
+            return null;
+        }
+    }
+    /*后序遍历*/
+    public herNode postOrderSearch(int no)
+    {
+        if (root!=null)
+        {
+            return root.postOrderSearch(no);
+        }
+        else {
+            return null;
         }
     }
 
@@ -136,6 +218,37 @@ class herNode{
                 '}';
     }
 
+    /*递归删除节点*/
+    /*1.如果是叶子节点，则删除该置为空
+    * 2.如果是非叶子节点，则删除该子树*/
+    public void delNode(int no)
+    {
+        /*判断左子节点是否是要删除的*/
+        if ( this.left!=null && this.left.no==no )
+        {
+            this.left=null;
+            return;
+        }
+        /*判断右节点*/
+        if (this.right!=null &&this.right.no==no)
+        {
+            this.right=null;
+            return;
+        }
+        /*左子树删除*/
+        if (this.left!=null)
+        {
+            this.left.delNode(no);
+        }
+
+        if (this.right!=null)
+        {
+            this.right.delNode(no);
+        }
+
+
+    }
+
     /*遍历前序遍历的方法*/
     public void preOrder()
     {
@@ -180,4 +293,96 @@ class herNode{
         }
         System.out.println(this);
     }
+
+    /*前序遍历查找*/
+    public herNode preOrderSearch(int no)
+    {
+
+        /*比较当前节点是不是*/
+        if (this.no==no)
+        {
+            return  this;
+        }
+        //则判断当前节点的左子节点是否为空，如果不为空，则递归前序查找
+        //如果左递归前序查找，找到节点则返回
+        herNode resNode=null;
+        if (this.left!=null)
+        {
+            resNode=this.left.preOrderSearch(no);
+        }
+
+        if (resNode!=null)
+        {
+            return resNode;
+        }
+
+        //如果左边没找到，，当前节点的右子节点是否为空，如果不空，则向右递归
+        if (this.right!=null)
+        {
+            resNode=this.right.preOrderSearch(no);
+
+        }
+        return resNode;
+
+
+    }
+
+    /*中序查找*/
+    public herNode infixOrderSearch(int no)
+    {
+        /*判断左节点是否为空*/
+        herNode resNode=null;
+        if (this.left!=null)
+        {
+            resNode=this.left.infixOrderSearch(no);
+        }
+
+        if (resNode!=null)
+        {return resNode;}
+        if (this.no==no)
+        {
+            return this;
+        }
+
+        /*否则继续查找*/
+        if (this.right!=null)
+        {
+            resNode=this.right.infixOrderSearch(no);
+
+        }
+        return resNode;
+    }
+
+    /*后序遍历查找*/
+    public herNode postOrderSearch(int no)
+    {
+        /*判断左节点是否为空*/
+        herNode resNode=null;
+        if (this.left!=null)
+        {
+            resNode=this.left.postOrderSearch(no);
+
+        }
+        if (resNode!=null)
+        {
+            return resNode;
+
+        }
+        if (this.right!=null)
+        {
+            resNode=this.right.postOrderSearch(no);
+
+        }
+        if (resNode!=null)
+        {
+            return resNode;
+        }
+
+        if (this.no==no)
+        {
+            return this;
+        }
+        return resNode;
+    }
 }
+
